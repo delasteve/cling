@@ -1,14 +1,14 @@
 {
-  "name": "ngclibot",
+  "name": "cling",
   "version": "1.0.0-alpha.0",
   "description": "A slackbot for the Angular CLI team",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/delasteve/ngclibot"
+    "url": "https://github.com/delasteve/cling"
   },
   "bugs": {
-    "url": "https://github.com/delasteve/ngclibot/issues"
+    "url": "https://github.com/delasteve/cling/issues"
   },
   "author": {
     "name": "Stephen Cavaliere",
@@ -21,10 +21,13 @@
   },
   "license": "MIT",
   "dependencies": {
+    "common-tags": "^1.4.0",
     "dotenv": "^4.0.0",
+    "slack": "^8.2.0",
     "ts-node": "^2.1.0"
   },
   "devDependencies": {
+    "@types/common-tags": "^1.2.5",
     "@types/dotenv": "^2.0.20",
     "@types/node": "^7.0.5",
     "tslint": "^4.4.2",
