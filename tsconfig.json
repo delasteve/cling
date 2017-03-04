@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "baseUrl": "",
+    "declaration": false,
+    "lib": [
+      "es2017"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "paths": {
+      "@cling/*": [
+        "./src/*"
+      ]
+    },
+    "rootDir": ".",
+    "sourceMap": true,
+    "target": "es2017",
+    "typeRoots": [
+      "./node_modules/@types/",
+      "./typings/"
+    ]
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

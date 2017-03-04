@@ -1,0 +1,33 @@
+{
+  "name": "ngclibot",
+  "version": "1.0.0-alpha.0",
+  "description": "A slackbot for the Angular CLI team",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/delasteve/ngclibot"
+  },
+  "bugs": {
+    "url": "https://github.com/delasteve/ngclibot/issues"
+  },
+  "author": {
+    "name": "Stephen Cavaliere",
+    "email": "stephencavaliere@gmail.com",
+    "url": "https://stephencavaliere.io"
+  },
+  "scripts": {
+    "start": "ts-node index.ts",
+    "build": "tsc --project ."
+  },
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "ts-node": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/dotenv": "^2.0.20",
+    "@types/node": "^7.0.5",
+    "tslint": "^4.4.2",
+    "typescript": "^2.1.6"
+  }
+}

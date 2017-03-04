@@ -1,0 +1,18 @@
+# VS Code
+.vscode
+
+# Typescript
+dist
+
+# NodeJS
+node_modules
+*.log
+yarn.lock
+
+# Environment files
+.env
+!.env.example
+
+# Ignore OS specific Files
+.DS_Store
+Thumbs.db
