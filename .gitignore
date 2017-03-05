@@ -13,6 +13,9 @@ yarn.lock
 .env
 !.env.example
 
+# Firebase
+firebase.json
+
 # Ignore OS specific Files
 .DS_Store
 Thumbs.db

@@ -23,6 +23,7 @@
   "dependencies": {
     "common-tags": "^1.4.0",
     "dotenv": "^4.0.0",
+    "firebase-admin": "^4.1.2",
     "slack": "^8.2.0",
     "ts-node": "^2.1.0"
   },

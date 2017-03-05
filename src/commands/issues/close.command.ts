@@ -1,18 +1,28 @@
 import { oneLine } from 'common-tags';
 import { AbstractCommand } from '../abstract.command';
+import { IIssuesRepository } from '../../repositories/issue.repository';
 
 export class CloseIssueCommand extends AbstractCommand {
-  constructor(slackToken: string) {
-    const commandPattern = /^\!close\s+\#?(\d+)/i;
+  private issuesRepository: IIssuesRepository;
 
+  constructor(slackToken: string, issuesRepository: IIssuesRepository) {
+    const commandPattern = /^\!close\s+\#?(\d+)/i;
     super(slackToken, commandPattern);
+
+    this.issuesRepository = issuesRepository;
   }
 
   public async execute(payload: any): Promise<any> {
-    const issue = await this.getIssue(payload.text);
+    const issueNumber = await this.getIssue(payload.text);
+
+    await this.issuesRepository.addIssue({
+      number: issueNumber,
+      action: 'close'
+    });
+
     const message = oneLine`
       Issue
-      <https://github.com/angular/angular-cli/issues/${issue}|#${issue}>
+      <https://github.com/angular/angular-cli/issues/${issueNumber}|#${issueNumber}>
       added to list to be closed.
     `;
 
