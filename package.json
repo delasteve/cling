@@ -17,7 +17,8 @@
   },
   "scripts": {
     "start": "ts-node index.ts",
-    "build": "tsc --project ."
+    "build": "tsc --project .",
+    "postbuild": "cp ./firebase.json ./dist"
   },
   "license": "MIT",
   "dependencies": {

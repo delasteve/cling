@@ -4,6 +4,9 @@
 # Typescript
 dist
 
+# Temp
+.tmp
+
 # NodeJS
 node_modules
 *.log
