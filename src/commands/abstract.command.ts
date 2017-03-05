@@ -1,32 +1,30 @@
-import * as slack from 'slack';
-import { ICommand } from './command.interface';
+import { IRegisterable } from '../registerable';
+import { ICommand } from './command';
 
-export abstract class AbstractCommand implements ICommand {
-
+export abstract class AbstractCommand implements IRegisterable, ICommand {
   public rtmEvent = 'message';
 
   constructor(
-    private readonly slackToken: string,
     protected readonly commandPattern: RegExp
   ) { }
 
-  canExecute(payload: any): boolean {
+  public callback(): (payload: any) => void {
+    return (payload: any) => {
+      if (this.canExecute(payload)) {
+        this.execute(payload);
+      }
+    };
+  }
+
+  public canExecute(payload: any): boolean {
     return !payload.subtype && this.test(payload.text);
   }
 
-  abstract execute(payload: any): void;
-
-  protected postMessage(payload: any, text: string) {
-    slack.chat
-      .postMessage({
-        token: this.slackToken,
-        channel: payload.channel,
-        text,
-        thread_ts: payload.thread_ts || payload.ts
-      }, () => {});
-  }
+  public abstract execute(payload: any): void;
 
   private test(text: string): boolean {
-    return this.commandPattern.test(text);
+    const regex = new RegExp(this.commandPattern);
+
+    return regex.test(text);
   }
 }

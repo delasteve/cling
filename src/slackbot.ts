@@ -1,5 +1,5 @@
 import * as slack from 'slack';
-import { ICommand } from './commands/command.interface';
+import { IRegisterable } from './registerable';
 
 export class SlackBot {
   private bot: any;
@@ -12,11 +12,7 @@ export class SlackBot {
     this.bot.listen({ token: this.slackToken });
   }
 
-  public registerCommand(command: ICommand): void {
-    this.bot[command.rtmEvent]((payload: any) => {
-      if (command.canExecute(payload)) {
-        command.execute(payload);
-      }
-    });
+  public register(registerable: IRegisterable): void {
+    this.bot[registerable.rtmEvent](registerable.callback());
   }
 }

@@ -1,15 +1,18 @@
 import { oneLine } from 'common-tags';
+import { IIssueRepository } from '../../repositories/issue.repository';
+import { IMessenger } from '../../messengers/messenger.interface';
 import { AbstractCommand } from '../abstract.command';
-import { IIssuesRepository } from '../../repositories/issue.repository';
 
 export class CloseIssueCommand extends AbstractCommand {
-  private issuesRepository: IIssuesRepository;
+  private readonly issuesRepository: IIssueRepository;
+  private readonly messenger: IMessenger;
 
-  constructor(slackToken: string, issuesRepository: IIssuesRepository) {
+  constructor(issuesRepository: IIssueRepository, messenger: IMessenger) {
     const commandPattern = /^\!close\s+\#?(\d+)/i;
-    super(slackToken, commandPattern);
+    super(commandPattern);
 
     this.issuesRepository = issuesRepository;
+    this.messenger = messenger;
   }
 
   public async execute(payload: any): Promise<any> {
@@ -26,7 +29,7 @@ export class CloseIssueCommand extends AbstractCommand {
       added to list to be closed.
     `;
 
-    this.postMessage(payload, message);
+    this.messenger.sendMesssage(message, payload);
   }
 
   private async getIssue(text: string) {

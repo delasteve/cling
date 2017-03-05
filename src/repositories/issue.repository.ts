@@ -1,3 +1,3 @@
-export interface IIssuesRepository {
+export interface IIssueRepository {
   addIssue(issue: any): Promise<any>;
 }

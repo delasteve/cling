@@ -16,6 +16,7 @@
     "url": "https://stephencavaliere.io"
   },
   "scripts": {
+    "test": "mocha -r ts-node/register \"src/**/*.spec.ts\"",
     "start": "ts-node index.ts",
     "build": "tsc --project .",
     "postbuild": "cp ./firebase.json ./dist"
@@ -29,10 +30,15 @@
     "ts-node": "^2.1.0"
   },
   "devDependencies": {
+    "@types/chai": "^3.4.35",
     "@types/common-tags": "^1.2.5",
     "@types/dotenv": "^2.0.20",
+    "@types/mocha": "^2.2.39",
     "@types/node": "^7.0.5",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
     "tslint": "^4.4.2",
+    "typemoq": "^1.2.1",
     "typescript": "^2.1.6"
   }
 }

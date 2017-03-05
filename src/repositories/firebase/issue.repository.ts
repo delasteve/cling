@@ -1,6 +1,6 @@
-import { IIssuesRepository } from '../issue.repository';
+import { IIssueRepository } from '../issue.repository';
 
-export class FirebaseIssueRepository implements IIssuesRepository {
+export class FirebaseIssueRepository implements IIssueRepository {
   constructor(
     private readonly database: admin.database.Database
   ) { }
