@@ -7,7 +7,7 @@ export class FirebaseIssueRepository implements IIssueRepository {
 
   async addIssue(issue: any): Promise<any> {
     await this.database
-      .ref('issues/' + issue.number)
+      .ref('issues/' + issue.id)
       .set({
         action: issue.action
       })

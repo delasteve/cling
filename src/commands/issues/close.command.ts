@@ -16,7 +16,7 @@ export class CloseIssueCommand extends AbstractCommand {
   }
 
   public async execute(payload: any): Promise<any> {
-    const issueNumber = await this.getIssue(payload.text);
+    const issueNumber = await this.getIssueId(payload.text);
 
     await this.issuesRepository.addIssue({
       number: issueNumber,
@@ -26,13 +26,13 @@ export class CloseIssueCommand extends AbstractCommand {
     const message = oneLine`
       Issue
       <https://github.com/angular/angular-cli/issues/${issueNumber}|#${issueNumber}>
-      added to list to be closed.
+      added to the list to be closed.
     `;
 
     this.messenger.sendMesssage(message, payload);
   }
 
-  private async getIssue(text: string) {
+  private async getIssueId(text: string) {
     const matches = this.commandPattern.exec(text);
 
     return matches[1];

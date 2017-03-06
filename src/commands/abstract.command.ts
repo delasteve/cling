@@ -2,7 +2,7 @@ import { IRegisterable } from '../registerable';
 import { ICommand } from './command';
 
 export abstract class AbstractCommand implements IRegisterable, ICommand {
-  public rtmEvent = 'message';
+  public readonly rtmEvent = 'message';
 
   constructor(
     protected readonly commandPattern: RegExp

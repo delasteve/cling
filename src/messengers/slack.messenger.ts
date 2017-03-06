@@ -15,8 +15,4 @@ export class SlackMessenger implements IMessenger {
         thread_ts: options.thread_ts || options.ts
       }, () => { });
   }
-
-  sendRichMessage(): Promise<any> {
-    throw new Error('Method not implemented.');
-  }
 }
