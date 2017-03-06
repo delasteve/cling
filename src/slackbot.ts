@@ -13,6 +13,6 @@ export class SlackBot {
   }
 
   public register(registerable: IRegisterable): void {
-    this.bot[registerable.rtmEvent](registerable.callback());
+    this.bot[registerable.rtmEvent]((payload) => { registerable.callback(payload); });
   }
 }

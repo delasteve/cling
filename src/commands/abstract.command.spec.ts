@@ -45,18 +45,19 @@ describe('AbstractCommand', () => {
   // currently disabled due to
   // https://github.com/florinn/typemoq/issues/51
   describe.skip('#callback', () => {
-    it('will call canExecute', () => {
+    it('should call canExecute', () => {
       const payload: any = { text: 'foo' };
+      mockCommand
+        .setup(x => x.canExecute(It.isAny()))
+        .returns(() => false);
 
-      command.callback()(payload);
+      command.callback(payload);
 
-      mockCommand.verify(
-        x => x.canExecute(It.isAny()),
-        Times.once());
+      mockCommand.verify(x => x.canExecute(It.isAny()), Times.once());
     });
 
-    it('will call execute if it can execute the command');
-    it(`will not call execute if it can't execute the command`);
+    it.skip('should call execute if it is able to execute the command');
+    it.skip('should not call execute if it is not able execute the command');
   });
 });
 

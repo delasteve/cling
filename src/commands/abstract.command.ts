@@ -8,12 +8,10 @@ export abstract class AbstractCommand implements IRegisterable, ICommand {
     protected readonly commandPattern: RegExp
   ) { }
 
-  public callback(): (payload: any) => void {
-    return (payload: any) => {
-      if (this.canExecute(payload)) {
-        this.execute(payload);
-      }
-    };
+  public callback(payload: any): void {
+    if (this.canExecute(payload)) {
+      this.execute(payload);
+    }
   }
 
   public canExecute(payload: any): boolean {
