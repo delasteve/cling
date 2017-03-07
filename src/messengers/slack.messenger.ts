@@ -6,13 +6,12 @@ export class SlackMessenger implements IMessenger {
     private slackToken: string
   ) { }
 
-  async sendMesssage(text: string, options: any): Promise<any> {
+  async sendMesssage(text: string, options: any): Promise<void> {
     slack.chat
       .postMessage({
         token: this.slackToken,
         channel: options.channel,
-        text,
-        thread_ts: options.thread_ts || options.ts
+        text
       }, () => { });
   }
 }

@@ -2,40 +2,56 @@ import { expect } from 'chai';
 import { CloseIssueCommand } from './close.command';
 import { Mock, IMock, Times, It } from 'typemoq';
 import { IMessenger } from '../../messengers/messenger.interface';
-import { IIssueRepository } from '../../repositories/issue.repository';
+import { IGitHubRepository } from '../../repositories/github.repository';
 
 describe('CloseIssueCommand', () => {
-  let mockIssueRepository: IMock<IIssueRepository>;
+  const project = 'foo/bar';
+  let mockGitHubRepository: IMock<IGitHubRepository>;
   let mockMessenger: IMock<IMessenger>;
   let closeIssueCommand: CloseIssueCommand;
 
   beforeEach(() => {
-    mockIssueRepository = Mock.ofType<IIssueRepository>();
+    mockGitHubRepository = Mock.ofType<IGitHubRepository>();
     mockMessenger = Mock.ofType<IMessenger>();
 
-    closeIssueCommand = new CloseIssueCommand(mockIssueRepository.object, mockMessenger.object);
+    closeIssueCommand = new CloseIssueCommand(project, mockGitHubRepository.object, mockMessenger.object);
+  });
+
+  describe('#canExecute', () => {
+    it('should allow "!close #<issue number>" to execute', async () => {
+      const result = await closeIssueCommand.canExecute({ text: '!close #9999' });
+
+      expect(result).to.be.true;
+    });
+
+    it('should allow "!close <issue number>" to execute', async () => {
+      const result = await closeIssueCommand.canExecute({ text: '!close 9999' });
+
+      expect(result).to.be.true;
+    });
   });
 
   describe('#execute', () => {
-    it('should call addIssue on issue repository', async () => {
-      const issue = { number: '1234', action: 'close' };
-      mockIssueRepository
-        .setup(x => x.addIssue(issue))
+    it('should call addLabels on the github repository', async () => {
+      const issue = '1234';
+      const labels = ['close'];
+      mockGitHubRepository
+        .setup(x => x.addLabels(issue, labels))
         .returns(() => Promise.resolve());
 
-      await closeIssueCommand.execute({ text: `!close #${issue.number}` });
+      await closeIssueCommand.execute({ text: `!close #${issue}` });
 
-      mockIssueRepository.verify(x => x.addIssue(It.isValue(issue)), Times.once());
+      mockGitHubRepository.verify(x => x.addLabels(It.isValue(issue), It.isValue(labels)), Times.once());
     });
 
     it('should call sendMessage on messenger with formatted message', async () => {
       const issueNumber = 2345;
       const payload = { text: `!close ${issueNumber}`, channel: 'C345678' };
       const expectedMessageRegex = It.is(
-        (message: string) => /^Issue .* added to the list .*/.test(message));
+        (message: string) => /^Issue .*foo\/bar.* labeled `close`/.test(message));
 
-      mockIssueRepository
-        .setup(x => x.addIssue(It.isAny()))
+      mockGitHubRepository
+        .setup(x => x.addLabels(It.isAny(), It.isAny()))
         .returns(() => Promise.resolve());
 
       await closeIssueCommand.execute(payload);
@@ -45,20 +61,6 @@ describe('CloseIssueCommand', () => {
           expectedMessageRegex,
           It.isValue(payload)),
         Times.once());
-    });
-  });
-
-  describe('#canExecute', () => {
-    it('should allow "!close #<issue number>" to execute', () => {
-      const result = closeIssueCommand.canExecute({ text: '!close #9999' });
-
-      expect(result).to.be.true;
-    });
-
-    it('should allow "!close <issue number>" to execute', () => {
-      const result = closeIssueCommand.canExecute({ text: '!close 9999' });
-
-      expect(result).to.be.true;
     });
   });
 });

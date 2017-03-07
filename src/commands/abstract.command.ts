@@ -8,17 +8,17 @@ export abstract class AbstractCommand implements IRegisterable, ICommand {
     protected readonly commandPattern: RegExp
   ) { }
 
-  public callback(payload: any): void {
-    if (this.canExecute(payload)) {
-      this.execute(payload);
+  public async callback(payload: any): Promise<void> {
+    if (await this.canExecute(payload)) {
+      await this.execute(payload);
     }
   }
 
-  public canExecute(payload: any): boolean {
+  public async canExecute(payload: any): Promise<boolean> {
     return !payload.subtype && this.test(payload.text);
   }
 
-  public abstract execute(payload: any): void;
+  public abstract execute(payload: any): Promise<void>;
 
   private test(text: string): boolean {
     const regex = new RegExp(this.commandPattern);

@@ -1,3 +1,3 @@
 export interface IMessenger {
-  sendMesssage(text: string, options: any): Promise<any>;
+  sendMesssage(text: string, options: any): Promise<void>;
 }

@@ -16,27 +16,27 @@ describe('AbstractCommand', () => {
   });
 
   describe('#canExecute', () => {
-    it('should return true when regex is a match', () => {
+    it('should return true when regex is a match', async () => {
       const payload = { text: 'this is a complicated regex' };
 
-      const result = command.canExecute(payload);
+      const result = await command.canExecute(payload);
 
       expect(result).to.be.true;
     });
 
-    it('should return false when regex match fails', () => {
+    it('should return false when regex match fails', async () => {
       const payload = { text: 'this is not a complicated regex' };
 
-      const result = command.canExecute(payload);
+      const result = await command.canExecute(payload);
 
       expect(result).to.be.false;
     });
 
-    it('should return true for all regex matches even if regex has global flag', () => {
+    it('should return true for all regex matches even if regex has global flag', async () => {
       const payload = { text: 'this is a complicated regex' };
 
       command.canExecute(payload);
-      const result = command.canExecute(payload);
+      const result = await command.canExecute(payload);
 
       expect(result).to.be.true;
     });
@@ -45,13 +45,13 @@ describe('AbstractCommand', () => {
   // currently disabled due to
   // https://github.com/florinn/typemoq/issues/51
   describe.skip('#callback', () => {
-    it('should call canExecute', () => {
+    it('should call canExecute', async () => {
       const payload: any = { text: 'foo' };
       mockCommand
         .setup(x => x.canExecute(It.isAny()))
-        .returns(() => false);
+        .returns(() => Promise.resolve(false));
 
-      command.callback(payload);
+      await command.callback(payload);
 
       mockCommand.verify(x => x.canExecute(It.isAny()), Times.once());
     });
@@ -66,5 +66,5 @@ class AbstractCommandTestSpecificSubclass extends AbstractCommand {
     super(commandPattern);
   }
 
-  execute(): void { }
+  async execute(): Promise<void> { }
 }

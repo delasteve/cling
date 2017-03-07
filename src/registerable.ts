@@ -1,4 +1,4 @@
 export interface IRegisterable {
   rtmEvent: string;
-  callback(payload: any): void;
+  callback(payload: any): Promise<void>;
 }

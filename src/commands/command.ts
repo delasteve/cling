@@ -1,4 +1,4 @@
 export interface ICommand {
-  canExecute(payload: any): boolean;
-  execute(payload: any): void;
+  canExecute(payload: any): Promise<boolean>;
+  execute(payload: any): Promise<void>;
 }
