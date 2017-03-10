@@ -43,6 +43,18 @@ describe('GetIssueInfoCommand', () => {
 
       expect(result).to.be.true;
     });
+
+    it('should allow "!i #<issue number>" to execute', async () => {
+      const result = await getIssueInfoCommand.canExecute({ text: '!i #9999' });
+
+      expect(result).to.be.true;
+    });
+
+    it('should allow "!i <issue number>" to execute', async () => {
+      const result = await getIssueInfoCommand.canExecute({ text: '!i 9999' });
+
+      expect(result).to.be.true;
+    });
   });
 
   describe('#execute', () => {

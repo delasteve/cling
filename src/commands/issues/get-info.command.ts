@@ -7,7 +7,7 @@ export class GetIssueInfoCommand extends AbstractCommand {
   private messenger: IMessenger;
 
   constructor(githubRepository: IGitHubRepository, messenger: IMessenger) {
-    const commandPattern = /^\!info\s+\#?(\d+)/i;
+    const commandPattern = /^\!i(?:nfo)?\s+\#?(\d+)/i;
     super(commandPattern);
 
     this.githubRepository = githubRepository;
