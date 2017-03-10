@@ -27,7 +27,7 @@ export class CloseIssueCommand extends AbstractCommand {
       has been labeled \`close\`.
     `;
 
-    await this.messenger.sendMesssage(message, payload);
+    this.messenger.sendMesssage(message, payload);
   }
 
   private async getIssueNumber(text: string): Promise<string> {

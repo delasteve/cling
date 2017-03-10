@@ -1,6 +1,7 @@
 import * as dotenv from 'dotenv';
 import { SlackBot } from './src/slackbot';
 import { CloseIssueCommand } from './src/commands/issues/close.command';
+import { GetIssueInfoCommand } from './src/commands/issues/get-info.command';
 import { GotGitHubRepository } from './src/repositories/got/github.repository';
 import { SlackMessenger } from './src/messengers/slack.messenger';
 
@@ -16,5 +17,6 @@ const slackMessenger = new SlackMessenger(slackToken);
 const githubRepository = new GotGitHubRepository(githubToken, githubProject);
 
 slackbot.register(new CloseIssueCommand(githubProject, githubRepository, slackMessenger));
+slackbot.register(new GetIssueInfoCommand(githubRepository, slackMessenger));
 
 slackbot.start();

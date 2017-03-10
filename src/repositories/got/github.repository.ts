@@ -7,8 +7,21 @@ export class GotGitHubRepository implements IGitHubRepository {
     private readonly githubProject: string
   ) { }
 
-  async addLabels(issueNumber: string | number, labels: string[]): Promise<any> {
-    const issueLabels = await got(`https://api.github.com/repos/${this.githubProject}/issues/${issueNumber}/labels`,
+  public async getIssue(issueNumber: string | number): Promise<any> {
+    const issue = await got(`https://api.github.com/repos/${this.githubProject}/issues/${issueNumber}`,
+      {
+        json: true,
+        headers: {
+          accept: 'application/vnd.github.v3+json',
+          authorization: `token ${this.githubToken}`
+        }
+      });
+
+    return issue.body;
+  }
+
+  public async addLabels(issueNumber: string | number, labels: string[]): Promise<any> {
+    const issueLabels = await got.post(`https://api.github.com/repos/${this.githubProject}/issues/${issueNumber}/labels`,
       {
         json: true,
         headers: {

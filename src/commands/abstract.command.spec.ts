@@ -42,22 +42,36 @@ describe('AbstractCommand', () => {
     });
   });
 
-  // currently disabled due to
-  // https://github.com/florinn/typemoq/issues/51
-  describe.skip('#callback', () => {
+  describe('#callback', () => {
     it('should call canExecute', async () => {
       const payload: any = { text: 'foo' };
-      mockCommand
-        .setup(x => x.canExecute(It.isAny()))
-        .returns(() => Promise.resolve(false));
 
       await command.callback(payload);
 
-      mockCommand.verify(x => x.canExecute(It.isAny()), Times.once());
+      mockCommand.verify(x => x.canExecute(payload), Times.once());
     });
 
-    it.skip('should call execute if it is able to execute the command');
-    it.skip('should not call execute if it is not able execute the command');
+    it('should call execute if it is able to execute the command', async () => {
+      const payload: any = { text: 'foo' };
+      mockCommand
+        .setup(x => x.canExecute(It.isAny()))
+        .returns(() => Promise.resolve(true));
+
+      await command.callback(payload);
+
+      mockCommand.verify(x => x.execute(payload), Times.once());
+    });
+
+    it('should not call execute if it is not able execute the command', async () => {
+      const payload: any = { text: 'foo' };
+      mockCommand
+        .setup(x => x.canExecute(It.isAny()))
+        .returns(() => Promise.resolve(true));
+
+      await command.callback(payload);
+
+      mockCommand.verify(x => x.execute(payload), Times.once());
+    });
   });
 });
 
