@@ -10,7 +10,11 @@ export abstract class AbstractCommand implements IRegisterable, ICommand {
 
   public async callback(payload: any): Promise<void> {
     if (await this.canExecute(payload)) {
-      await this.execute(payload);
+      try {
+        await this.execute(payload);
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 
