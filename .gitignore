@@ -26,3 +26,6 @@ Thumbs.db
 # Code Coverage
 coverage
 .nyc_output
+
+# Docker
+docker-compose.yml

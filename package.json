@@ -19,8 +19,7 @@
     "test": "mocha -r ts-node/register \"src/**/*.spec.ts\"",
     "test:coverage": "nyc npm test",
     "start": "ts-node index.ts",
-    "build": "tsc --project .",
-    "postbuild": "cp ./firebase.json ./dist"
+    "build": "tsc --project ."
   },
   "license": "MIT",
   "dependencies": {
