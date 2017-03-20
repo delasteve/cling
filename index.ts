@@ -1,4 +1,6 @@
 import * as dotenv from 'dotenv';
+dotenv.config();
+
 import { SlackBot } from './src/slackbot';
 import { CloseIssueCommand } from './src/commands/issues/close.command';
 import { GetIssueInfoCommand } from './src/commands/issues/get-info.command';
@@ -8,8 +10,6 @@ import { GotGitHubRepository } from './src/repositories/got/github.repository';
 import { createFirebaseContext } from './src/repositories/firebase/firebase.context';
 import { FirebaseUserRepository } from './src/repositories/firebase/user.repository';
 import { SlackMessenger } from './src/messengers/slack.messenger';
-
-dotenv.config();
 
 const slackToken = process.env.SLACK_TOKEN;
 const githubProject = process.env.GITHUB_PROJECT;
