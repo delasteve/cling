@@ -53,6 +53,7 @@ In order for this project to run you need a Firebase service account file, a Git
 - Click `Generate Token` at the bottom of the page
 - Set the `GITHUB_TOKEN` variable with the generated
 - Set the `GITHUB_PROJECT` variable with the project you would like to have the bot work with
+
   e.g. `angular/angular-cli`
 
 ## License
