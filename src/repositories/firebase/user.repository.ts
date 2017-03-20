@@ -15,6 +15,20 @@ export class FirebaseUserRepository implements IUserRepository {
     this.users = this.database.ref('users');
   }
 
+  public async getPermissions(userId: string): Promise<string[]> {
+    const permissions = await this.users
+      .child(`${userId}/permissions`)
+      .once('value')
+      .then(snapshot => snapshot.val());
+
+    if (permissions === null) { return []; }
+
+    const keys = Object.keys(permissions);
+    const userPermissions = keys.filter(key => permissions[key]);
+
+    return userPermissions;
+  }
+
   public async addPermissions(userId: string, permissionsList: string[]): Promise<void> {
     await this.updatePermissions(userId, permissionsList, Permission.add);
   }
@@ -23,11 +37,13 @@ export class FirebaseUserRepository implements IUserRepository {
     await this.updatePermissions(userId, permissionsList, Permission.remove);
   }
 
-  public async hasPermission(userId: string, permissions: string[]): Promise<boolean> {
+  public async hasPermissions(userId: string, permissions: string[]): Promise<boolean> {
     const userPermissions = await this.users
       .child(`${userId}/permissions`)
       .once('value')
       .then(snapshot => snapshot.val());
+
+    if (userPermissions === null) { return false; }
 
     const hasPermission = permissions.find(permission => !!userPermissions[permission]);
 

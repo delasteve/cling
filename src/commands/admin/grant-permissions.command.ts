@@ -2,7 +2,7 @@ import { IUserRepository } from '../../repositories/user.respository';
 import { IMessenger } from '../../messengers/messenger.interface';
 import { AbstractCommand } from '../abstract.command';
 
-export class GrantPermissionCommand extends AbstractCommand {
+export class GrantPermissionsCommand extends AbstractCommand {
   private readonly userRepository: IUserRepository;
   private readonly messenger: IMessenger;
   private readonly validPermissions: string[];
@@ -22,11 +22,19 @@ export class GrantPermissionCommand extends AbstractCommand {
     ];
   }
 
-  public async execute(payload: any): Promise<void> {
-    if (!(await this.userRepository.hasPermission(payload.user, ['admin']))) {
-      return await this.messenger.sendMesssage('You do not have permission to use this command.', payload);
+  public async canExecute(payload: any): Promise<boolean> {
+    if (!(await super.canExecute(payload))) { return false; }
+
+    const hasPermission = await this.userRepository.hasPermissions(payload.user, ['admin']);
+
+    if (!hasPermission) {
+      await this.messenger.sendMesssage('You do not have permission to use this command.', payload);
     }
 
+    return hasPermission;
+  }
+
+  public async execute(payload: any): Promise<void> {
     const userId = this.getUserId(payload.text);
     const permissions = this.getPermissionChanges(payload.text);
 
