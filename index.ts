@@ -14,13 +14,23 @@ import { SlackMessenger } from './src/messengers/slack.messenger';
 const slackToken = process.env.SLACK_TOKEN;
 const githubProject = process.env.GITHUB_PROJECT;
 const githubToken = process.env.GITHUB_TOKEN;
+const firebaseProjectId = process.env.FIREBASE_PROJECT_ID || '';
+const firebasePrivateKeyId = process.env.FIREBASE_PRIVATE_KEY_ID || '';
+const firebasePrivateKey = process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n') || '';
+const firebaseClientEmail = process.env.FIREBASE_CLIENT_EMAIL || '';
+const firebaseClientId = process.env.FIREBASE_CLIENT_ID || '';
+const firebaseClientCertUrl = process.env.FIREBASE_CLIENT_X509_CERT_URL || '';
+const firebaseDatabaseUrl = process.env.FIREBASE_DATABASE_URL;
 
 const slackbot = new SlackBot(slackToken);
 
 const slackMessenger = new SlackMessenger(slackToken);
 const githubRepository = new GotGitHubRepository(githubToken, githubProject);
 
-const firebaseContext = createFirebaseContext();
+const firebaseContext = createFirebaseContext(
+  firebaseDatabaseUrl, firebaseProjectId, firebasePrivateKeyId,
+  firebasePrivateKey, firebaseClientEmail, firebaseClientId,
+  firebaseClientCertUrl);
 const userRepository = new FirebaseUserRepository(firebaseContext);
 
 slackbot.register(new CloseIssueCommand(githubProject, githubRepository, slackMessenger));
