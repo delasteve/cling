@@ -23,6 +23,10 @@ export class GrantPermissionCommand extends AbstractCommand {
   }
 
   public async execute(payload: any): Promise<void> {
+    if (!(await this.userRepository.hasPermission(payload.user, ['admin']))) {
+      return await this.messenger.sendMesssage('You do not have permission to use this command.', payload);
+    }
+
     const userId = this.getUserId(payload.text);
     const permissions = this.getPermissionChanges(payload.text);
 

@@ -7,7 +7,6 @@ enum Permission {
 }
 
 export class FirebaseUserRepository implements IUserRepository {
-
   private users: admin.database.Reference;
 
   constructor(
@@ -22,6 +21,17 @@ export class FirebaseUserRepository implements IUserRepository {
 
   public async removePermissions(userId: string, permissionsList: string[]): Promise<void> {
     await this.updatePermissions(userId, permissionsList, Permission.remove);
+  }
+
+  public async hasPermission(userId: string, permissions: string[]): Promise<boolean> {
+    const userPermissions = await this.users
+      .child(`${userId}/permissions`)
+      .once('value')
+      .then(snapshot => snapshot.val());
+
+    const hasPermission = permissions.find(permission => !!userPermissions[permission]);
+
+    return typeof hasPermission !== 'undefined';
   }
 
   private async updatePermissions(userId: string, permissionsList: string[], permissionType: Permission): Promise<void> {
