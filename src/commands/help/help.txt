@@ -1,0 +1,9 @@
+```
+Commmand                           Alias Description
+----------------------------------|-----|-----------
+!help                             |     | This help command
+!close [issue-id] <reason>        | !c  | Mark the issue as ready to close
+!info  [issue-id]                 | !i  | Get info of the issue
+!permission [user]                | !p  | Get permissions for user
+!permission [user] [permissions]  | !p  | Set permissions for user
+```
