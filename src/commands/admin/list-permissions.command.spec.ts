@@ -27,7 +27,7 @@ describe('ListPermissionComamnd', () => {
       await command.canExecute({ user: executingUserId, text: `!p <@U8675309FOO>` });
 
       mockMessenger.verify(
-        x => x.sendMesssage(It.isValue('You do not have permission to use this command.'), It.isAny()), Times.once());
+        x => x.sendMessage(It.isValue('You do not have permission to use this command.'), It.isAny()), Times.once());
     });
 
     it('should return false when user lacks permission', async () => {
@@ -102,7 +102,7 @@ describe('ListPermissionComamnd', () => {
 
       await command.execute({ text: `!p <@U98023BSV>` });
 
-      mockMessenger.verify(x => x.sendMesssage(It.isValue('User has no permissions.'), It.isAny()), Times.once());
+      mockMessenger.verify(x => x.sendMessage(It.isValue('User has no permissions.'), It.isAny()), Times.once());
     });
 
     it('should list permission for user when permission in list', async () => {
@@ -112,7 +112,7 @@ describe('ListPermissionComamnd', () => {
 
       await command.execute({ text: `!p <@U98023BSV>` });
 
-      mockMessenger.verify(x => x.sendMesssage(It.isValue('User has the following permissions: `admin`.'), It.isAny()), Times.once());
+      mockMessenger.verify(x => x.sendMessage(It.isValue('User has the following permissions: `admin`.'), It.isAny()), Times.once());
     });
 
     it('should list all permissions for user when multiple permissions in list', async () => {
@@ -122,7 +122,7 @@ describe('ListPermissionComamnd', () => {
 
       await command.execute({ text: `!p <@U98023BSV>` });
 
-      mockMessenger.verify(x => x.sendMesssage(It.isValue('User has the following permissions: `admin`, `ci`.'), It.isAny()), Times.once());
+      mockMessenger.verify(x => x.sendMessage(It.isValue('User has the following permissions: `admin`, `ci`.'), It.isAny()), Times.once());
     });
   });
 });

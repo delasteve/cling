@@ -57,7 +57,7 @@ describe('CloseIssueCommand', () => {
       await closeIssueCommand.execute(payload);
 
       mockMessenger.verify(
-        x => x.sendMesssage(
+        x => x.sendMessage(
           expectedMessageRegex,
           It.isValue(payload)),
         Times.once());

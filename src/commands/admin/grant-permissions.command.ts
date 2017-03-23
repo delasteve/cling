@@ -16,8 +16,9 @@ export class GrantPermissionsCommand extends AbstractCommand {
     // TODO: put this in the database
     this.validPermissions = [
       'admin',
-      'issue', 'issue:open', 'issue:close', 'issue:label', 'issue:assign',
-      'pr', 'pr:open', 'pr:close', 'pr:label', 'pr:review',
+      'open', 'close', 'label', 'assign', 'review', 'lock',
+      'issue', 'issue:open', 'issue:close', 'issue:label', 'issue:assign', 'issue:lock',
+      'pr', 'pr:open', 'pr:close', 'pr:label', 'pr:assign', 'pr:review', 'pr:lock',
       'ci', 'travis', 'appveyor'
     ];
   }
@@ -28,7 +29,7 @@ export class GrantPermissionsCommand extends AbstractCommand {
     const hasPermission = await this.userRepository.hasPermissions(payload.user, ['admin']);
 
     if (!hasPermission) {
-      await this.messenger.sendMesssage('You do not have permission to use this command.', payload);
+      await this.messenger.sendMessage('You do not have permission to use this command.', payload);
     }
 
     return hasPermission;
@@ -42,9 +43,9 @@ export class GrantPermissionsCommand extends AbstractCommand {
     await this.userRepository.removePermissions(userId, permissions.remove);
 
     if (permissions.add.length > 0 || permissions.remove.length > 0) {
-      await this.messenger.sendMesssage('Successfully updated permissions.', payload);
+      await this.messenger.sendMessage('Successfully updated permissions.', payload);
     } else {
-      await this.messenger.sendMesssage('No permissions were updated.', payload);
+      await this.messenger.sendMessage('No permissions were updated.', payload);
     }
   }
 

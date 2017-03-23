@@ -3,6 +3,7 @@ version: '3'
 services:
   cling:
     image: delasteve/cling:latest
+    container_name: cling
     build:
       context: .
       dockerfile: Dockerfile

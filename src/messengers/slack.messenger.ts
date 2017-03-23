@@ -6,7 +6,7 @@ export class SlackMessenger implements IMessenger {
     private slackToken: string
   ) { }
 
-  public sendMesssage(text: string, options: any): void {
+  public sendMessage(text: string, options: any): void {
     slack.chat
       .postMessage({
         token: this.slackToken,

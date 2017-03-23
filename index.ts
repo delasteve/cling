@@ -10,6 +10,7 @@ import { GotGitHubRepository } from './src/repositories/got/github.repository';
 import { createFirebaseContext } from './src/repositories/firebase/firebase.context';
 import { FirebaseUserRepository } from './src/repositories/firebase/user.repository';
 import { SlackMessenger } from './src/messengers/slack.messenger';
+import { SetLabelsCommand } from './src/commands/issues/set-labels.command';
 
 const slackToken = process.env.SLACK_TOKEN;
 const githubProject = process.env.GITHUB_PROJECT;
@@ -37,5 +38,6 @@ slackbot.register(new CloseIssueCommand(githubProject, githubRepository, slackMe
 slackbot.register(new GetIssueInfoCommand(githubRepository, slackMessenger));
 slackbot.register(new GrantPermissionsCommand(userRepository, slackMessenger));
 slackbot.register(new ListPermissionsCommand(userRepository, slackMessenger));
+slackbot.register(new SetLabelsCommand(githubRepository, userRepository, slackMessenger));
 
 slackbot.start();

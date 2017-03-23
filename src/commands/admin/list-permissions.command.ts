@@ -20,7 +20,7 @@ export class ListPermissionsCommand extends AbstractCommand {
     const hasPermission = await this.userRepository.hasPermissions(payload.user, ['admin']);
 
     if (!hasPermission) {
-      await this.messenger.sendMesssage('You do not have permission to use this command.', payload);
+      await this.messenger.sendMessage('You do not have permission to use this command.', payload);
     }
 
     return hasPermission;
@@ -31,12 +31,12 @@ export class ListPermissionsCommand extends AbstractCommand {
     const permissions = await this.userRepository.getPermissions(userId);
 
     if (permissions.length === 0) {
-      return await this.messenger.sendMesssage(`User has no permissions.`, payload);
+      return await this.messenger.sendMessage(`User has no permissions.`, payload);
     }
 
     const userPermissions = permissions.join('`, `');
 
-    await this.messenger.sendMesssage(`User has the following permissions: \`${userPermissions}\`.`, payload);
+    await this.messenger.sendMessage(`User has the following permissions: \`${userPermissions}\`.`, payload);
   }
 
   private getUserId(text: string) {

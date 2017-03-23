@@ -27,7 +27,7 @@ describe('GrantPermissionComamnd', () => {
       await command.canExecute({ user: executingUserId, text: `!p <@U8675309FOO> issue` });
 
       mockMessenger.verify(
-        x => x.sendMesssage(It.isValue('You do not have permission to use this command.'), It.isAny()), Times.once());
+        x => x.sendMessage(It.isValue('You do not have permission to use this command.'), It.isAny()), Times.once());
     });
 
     it('should return false when user lacks permission', async () => {
@@ -138,13 +138,13 @@ describe('GrantPermissionComamnd', () => {
     it('should send message notifying an update occurred', async () => {
       await command.execute({ text: `!p <@U8675309FOO> issue` });
 
-      mockMessenger.verify(x => x.sendMesssage(It.isValue('Successfully updated permissions.'), It.isAny()), Times.once());
+      mockMessenger.verify(x => x.sendMessage(It.isValue('Successfully updated permissions.'), It.isAny()), Times.once());
     });
 
     it('should send message notifying a failed update when permission is not valid', async () => {
       await command.execute({ text: `!p <@U8675309FOO> foo` });
 
-      mockMessenger.verify(x => x.sendMesssage(It.isValue('No permissions were updated.'), It.isAny()), Times.once());
+      mockMessenger.verify(x => x.sendMessage(It.isValue('No permissions were updated.'), It.isAny()), Times.once());
     });
   });
 });
