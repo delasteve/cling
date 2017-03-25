@@ -146,9 +146,9 @@ describe('GetIssueInfoCommand', () => {
       const expectedIssues = It.is((x: any[]) =>
         !!expect(x).to.have.length(2) &&
         !!expect(x[0].title).to.equal('Label(s)') &&
-        !!expect(x[0].short).to.true &&
+        !!expect(x[0].short).to.be.true &&
         !!expect(x[1].title).to.equal('Assignee(s)') &&
-        !!expect(x[1].short).to.true
+        !!expect(x[1].short).to.be.true
       );
 
       await getIssueInfoCommand.execute({ text: `!info #${issueNumber}` });

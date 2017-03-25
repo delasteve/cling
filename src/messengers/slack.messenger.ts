@@ -11,7 +11,8 @@ export class SlackMessenger implements IMessenger {
       .postMessage({
         token: this.slackToken,
         channel: options.channel,
-        text
+        text,
+        as_user: true
       }, () => { });
   }
 
@@ -42,7 +43,8 @@ export class SlackMessenger implements IMessenger {
         token: this.slackToken,
         channel: options.channel,
         text: ' ',
-        attachments: [attachment]
+        attachments: [attachment],
+        as_user: true
       }, () => { });
   }
 
