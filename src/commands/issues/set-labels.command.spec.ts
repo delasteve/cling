@@ -70,6 +70,7 @@ describe('GrantPermissionComamnd', () => {
         .setup(x => x.hasPermissions(It.isAny(), It.isAny()))
         .returns(() => Promise.resolve(true));
 
+      mockGitHubRepository.reset();
       mockGitHubRepository
         .setup(x => x.getIssue(It.isAny()))
         .returns(() => Promise.resolve({ pull_request: {} }));

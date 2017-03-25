@@ -61,6 +61,7 @@ export class SetLabelsCommand extends AbstractCommand {
 
   private async isPullRequest(issueNumber: string): Promise<boolean> {
     const issue = await this.githubRepository.getIssue(issueNumber);
+
     return !!issue.pull_request;
   }
 
