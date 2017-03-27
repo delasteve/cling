@@ -1,20 +1,10 @@
 import { AbstractCommand } from '../abstract.command';
-import { IGitHubRepository } from '../../repositories/github.repository';
-import { IMessenger } from '../../messengers/messenger.interface';
-import { IUserRepository } from '../../repositories/user.respository';
+import { githubRepository, slackMessenger, userRepository } from '../../../index'
 
 export class SetLabelsCommand extends AbstractCommand {
-  private readonly githubRepository: IGitHubRepository;
-  private readonly userRepository: IUserRepository;
-  private readonly messenger: IMessenger;
-
-  constructor(githubRepository: IGitHubRepository, userRepository: IUserRepository, messenger: IMessenger) {
+  constructor() {
     const commandPattern = /^\!l(?:abel)?\s+\#?(\d+)\s+(.+)/i;
     super(commandPattern);
-
-    this.githubRepository = githubRepository;
-    this.userRepository = userRepository;
-    this.messenger = messenger;
   }
 
   public async canExecute(payload: any): Promise<boolean> {
@@ -28,10 +18,10 @@ export class SetLabelsCommand extends AbstractCommand {
       permissions.push('issue', 'issue:label');
     }
 
-    const hasPermission = await this.userRepository.hasPermissions(payload.user, permissions);
+    const hasPermission = await userRepository.hasPermissions(payload.user, permissions);
 
     if (!hasPermission) {
-      await this.messenger.sendMessage('You do not have permission to use this command.', payload);
+      await slackMessenger.sendMessage('You do not have permission to use this command.', payload);
     }
 
     return hasPermission;
@@ -41,16 +31,16 @@ export class SetLabelsCommand extends AbstractCommand {
     const issueNumber = await this.getIssueNumber(payload.text);
     const labelChanges = await this.getLabelChanges(payload.text);
 
-    await this.githubRepository.addLabels(issueNumber, labelChanges.add);
-    await this.githubRepository.removeLabels(issueNumber, labelChanges.remove);
+    await githubRepository.addLabels(issueNumber, labelChanges.add);
+    await githubRepository.removeLabels(issueNumber, labelChanges.remove);
 
-    const issueLabels = await this.githubRepository.getIssueLabels(issueNumber);
+    const issueLabels = await githubRepository.getIssueLabels(issueNumber);
 
     if (issueLabels.length === 0) {
-      return await this.messenger.sendMessage(`Issue #${issueNumber} has been updated. It now has 0 labels.`, payload);
+      return await slackMessenger.sendMessage(`Issue #${issueNumber} has been updated. It now has 0 labels.`, payload);
     }
 
-    return await this.messenger.sendMessage(
+    return await slackMessenger.sendMessage(
       `Issue #${issueNumber} has been updated. It now has the following label(s): \`${issueLabels.join('`, `')}\`.`,
       payload);
   }
@@ -60,13 +50,13 @@ export class SetLabelsCommand extends AbstractCommand {
   }
 
   private async isPullRequest(issueNumber: string): Promise<boolean> {
-    const issue = await this.githubRepository.getIssue(issueNumber);
+    const issue = await githubRepository.getIssue(issueNumber);
 
     return !!issue.pull_request;
   }
 
   private async getLabelChanges(text: string) {
-    const repoLabels = await this.githubRepository.getRepositoryLabels();
+    const repoLabels = await githubRepository.getRepositoryLabels();
 
     const matches = this.commandPattern.exec(text)[2];
     const allLabels: string[] = matches

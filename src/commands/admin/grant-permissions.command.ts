@@ -1,18 +1,13 @@
-import { IUserRepository } from '../../repositories/user.respository';
-import { IMessenger } from '../../messengers/messenger.interface';
 import { AbstractCommand } from '../abstract.command';
+import { slackMessenger, userRepository } from "../../../index";
 
 export class GrantPermissionsCommand extends AbstractCommand {
-  private readonly userRepository: IUserRepository;
-  private readonly messenger: IMessenger;
   private readonly validPermissions: string[];
 
-  constructor(userRepository: IUserRepository, messenger: IMessenger) {
+  constructor() {
     const commandPattern = /^\!p(?:ermission(?:s)?)?\s+<\@(U\d+\w+)>\s+(.*)/i;
     super(commandPattern);
 
-    this.userRepository = userRepository;
-    this.messenger = messenger;
     // TODO: put this in the database
     this.validPermissions = [
       'admin',
@@ -26,10 +21,10 @@ export class GrantPermissionsCommand extends AbstractCommand {
   public async canExecute(payload: any): Promise<boolean> {
     if (!(await super.canExecute(payload))) { return false; }
 
-    const hasPermission = await this.userRepository.hasPermissions(payload.user, ['admin']);
+    const hasPermission = await userRepository.hasPermissions(payload.user, ['admin']);
 
     if (!hasPermission) {
-      await this.messenger.sendMessage('You do not have permission to use this command.', payload);
+      await slackMessenger.sendMessage('You do not have permission to use this command.', payload);
     }
 
     return hasPermission;
@@ -39,13 +34,13 @@ export class GrantPermissionsCommand extends AbstractCommand {
     const userId = this.getUserId(payload.text);
     const permissions = this.getPermissionChanges(payload.text);
 
-    await this.userRepository.addPermissions(userId, permissions.add);
-    await this.userRepository.removePermissions(userId, permissions.remove);
+    await userRepository.addPermissions(userId, permissions.add);
+    await userRepository.removePermissions(userId, permissions.remove);
 
     if (permissions.add.length > 0 || permissions.remove.length > 0) {
-      await this.messenger.sendMessage('Successfully updated permissions.', payload);
+      await slackMessenger.sendMessage('Successfully updated permissions.', payload);
     } else {
-      await this.messenger.sendMessage('No permissions were updated.', payload);
+      await slackMessenger.sendMessage('No permissions were updated.', payload);
     }
   }
 

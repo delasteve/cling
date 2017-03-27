@@ -1,22 +1,16 @@
 import { AbstractCommand } from '../abstract.command';
-import { IGitHubRepository } from '../../repositories/github.repository';
-import { IMessenger, LinkableText } from '../../messengers/messenger.interface';
+import { LinkableText } from '../../messengers/messenger.interface';
+import { githubRepository, slackMessenger } from '../../../index'
 
 export class GetIssueInfoCommand extends AbstractCommand {
-  private githubRepository: IGitHubRepository;
-  private messenger: IMessenger;
-
-  constructor(githubRepository: IGitHubRepository, messenger: IMessenger) {
+  constructor() {
     const commandPattern = /^\!i(?:nfo)?\s+\#?(\d+)/i;
     super(commandPattern);
-
-    this.githubRepository = githubRepository;
-    this.messenger = messenger;
   }
 
   public async execute(payload: any): Promise<void> {
     const issueNumber = await this.getIssueNumber(payload.text);
-    const issue = await this.githubRepository.getIssue(issueNumber);
+    const issue = await githubRepository.getIssue(issueNumber);
 
     const issueTitle = this.getIssueTitle(issue);
     const issueColor = this.getStateColor(issue.state);
@@ -26,7 +20,7 @@ export class GetIssueInfoCommand extends AbstractCommand {
       this.buildIssueAssigneesField(issue.assignees)
     ];
 
-    this.messenger.sendRichMessage(issueTitle, issueColor, author, fields, payload);
+    slackMessenger.sendRichMessage(issueTitle, issueColor, author, fields, payload);
   }
 
   private getIssueTitle(issue: any): LinkableText {

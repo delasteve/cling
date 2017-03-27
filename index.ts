@@ -35,9 +35,11 @@ const firebaseContext = createFirebaseContext(
 const userRepository = new FirebaseUserRepository(firebaseContext);
 
 // slackbot.register(new CloseIssueCommand(githubProject, githubRepository, slackMessenger));
-slackbot.register(new GetIssueInfoCommand(githubRepository, slackMessenger));
-slackbot.register(new GrantPermissionsCommand(userRepository, slackMessenger));
-slackbot.register(new ListPermissionsCommand(userRepository, slackMessenger));
-slackbot.register(new SetLabelsCommand(githubRepository, userRepository, slackMessenger));
+slackbot.register(new GetIssueInfoCommand());
+slackbot.register(new GrantPermissionsCommand());
+slackbot.register(new ListPermissionsCommand());
+slackbot.register(new SetLabelsCommand());
 
 slackbot.start();
+
+export { githubRepository, slackMessenger, userRepository}
